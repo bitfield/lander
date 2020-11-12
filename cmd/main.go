@@ -14,16 +14,16 @@ import (
 
 func main() {
 	fmt.Println("Land safely at a vertical speed of 10m/s or less.")
-	alt := 100.0
+	altitude := 100.0
 	velocity := -100.0
-	acceleration := -10.0
+	gravity := -10.0
 	thrust := 0.0
-	for alt > 0 {
-		fmt.Println("Altitude: ", alt, "Velocity: ", velocity, "Thrust:", thrust)
+	for altitude > 0 {
+		fmt.Println("Altitude: ", altitude, "Velocity: ", velocity, "Thrust:", thrust)
 		fmt.Print("Enter thrust setting (m/s/s): ")
 		fmt.Scanln(&thrust)
-		alt += velocity
-		velocity += acceleration
+		altitude += velocity
+		velocity += gravity
 		velocity += thrust
 	}
 	if math.Abs(velocity) <= 10 {
