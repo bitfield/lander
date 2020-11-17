@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"lander"
 	"math"
 )
 
@@ -14,10 +15,8 @@ import (
 
 func main() {
 	fmt.Println("Land safely at a vertical speed of 10m/s or less.")
-	altitude := 100.0
-	velocity := -100.0
-	gravity := -10.0
-	thrust := 0.0
+	lander.InitGame()
+
 	for altitude > 0 {
 		fmt.Println("Altitude: ", altitude, "Velocity: ", velocity, "Thrust:", thrust)
 		fmt.Print("Enter thrust setting (m/s/s): ")
