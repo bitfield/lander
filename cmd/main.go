@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"lander"
 	"math"
+	"os"
 )
 
 // TODO: fuel
@@ -18,7 +19,7 @@ func main() {
 	lander.InitGame()
 
 	for altitude > 0 {
-		fmt.Println("Altitude: ", altitude, "Velocity: ", velocity, "Thrust:", thrust)
+		lander.DisplayState(os.Stdout)
 		fmt.Print("Enter thrust setting (m/s/s): ")
 		fmt.Scanln(&thrust)
 		altitude += velocity

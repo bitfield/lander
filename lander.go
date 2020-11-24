@@ -5,22 +5,19 @@ import (
 	"io"
 )
 
-type State struct {
+type Game struct {
 	Altitude, Velocity, Gravity, Thrust float64
 }
 
-var GameState State
-
-// InitGame ...
-func InitGame() {
-	GameState = State{
+func NewGame() (Game, error) {
+	return Game{
 		Altitude: 100.0,
 		Velocity: -100.0,
 		Gravity:  -10.0,
 		Thrust:   0.0,
-	}
+	}, nil
 }
 
-func DisplayState(w io.Writer) {
-	fmt.Fprintf(w, "Altitude: %.1f Velocity: %.1f Thrust: %.1f\n", GameState.Altitude, GameState.Velocity, GameState.Thrust)
+func (g Game) DisplayState(w io.Writer) {
+	fmt.Fprintf(w, "Altitude: %.1f Velocity: %.1f Thrust: %.1f\n", g.Altitude, g.Velocity, g.Thrust)
 }
