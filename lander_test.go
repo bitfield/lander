@@ -41,9 +41,9 @@ func TestReadThrust(t *testing.T) {
 	// don't care about error
 	g, _ := lander.NewGame()
 	want := 10.0
-	input := bytes.NewBufferString("10\n")
-	output := bytes.Buffer{}
-	g.ReadThrust(&input, &output)
+	input := bytes.NewBufferString("10.0\n")
+	output := &bytes.Buffer{}
+	g.ReadThrust(input, output)
 	// TODO: check output
 	got := g.Thrust
 	if want != got {

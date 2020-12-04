@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"lander"
+	"log"
 	"math"
 	"os"
 )
@@ -16,15 +17,17 @@ import (
 
 func main() {
 	fmt.Println("Land safely at a vertical speed of 10m/s or less.")
-	lander.InitGame()
-
-	for altitude > 0 {
-		lander.DisplayState(os.Stdout)
-		fmt.Print("Enter thrust setting (m/s/s): ")
-		fmt.Scanln(&thrust)
-		altitude += velocity
-		velocity += gravity
-		velocity += thrust
+	g, err := lander.NewGame()
+	if err != nil {
+		log.Fatal(err)
+	}
+	for g.Altitude > 0 {
+		g.DisplayState(os.Stdout)
+		g.ReadThrust(os.Stdin, os.Stdout)
+		g.UpdateWorld()
+		// g.Altitude += g.Velocity
+		// g.Velocity += g.Gravity
+		// g.Velocity += g.Thrust
 	}
 	if math.Abs(velocity) <= 10 {
 		fmt.Printf("Safe landing (%.1fm/s): you win!\n", velocity)
