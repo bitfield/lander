@@ -4,15 +4,19 @@ import (
 	"bytes"
 	"lander"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestNewGame(t *testing.T) {
 	t.Parallel()
 	want := lander.Game{
-		Altitude: 100.0,
-		Velocity: -100.0,
-		Gravity:  -10.0,
-		Thrust:   0.0,
+		State: lander.State{
+			Altitude: 100.0,
+			Velocity: -100.0,
+			Gravity:  -10.0,
+			Thrust:   0.0,
+		},
 	}
 	got, err := lander.NewGame()
 	if err != nil {
@@ -25,8 +29,10 @@ func TestNewGame(t *testing.T) {
 
 func TestDisplayState(t *testing.T) {
 	t.Parallel()
-	// don't care about error
-	g, _ := lander.NewGame()
+	g, err := lander.NewGame()
+	if err != nil {
+		t.Fatal(err)
+	}
 	want := "Altitude: 100.0 Velocity: -100.0 Thrust: 0.0\n"
 	buf := bytes.Buffer{}
 	g.DisplayState(&buf)
@@ -38,15 +44,36 @@ func TestDisplayState(t *testing.T) {
 
 func TestReadThrust(t *testing.T) {
 	t.Parallel()
-	// don't care about error
-	g, _ := lander.NewGame()
+	g, err := lander.NewGame()
+	if err != nil {
+		t.Fatal(err)
+	}
 	want := 10.0
-	input := bytes.NewBufferString("10.0\n")
+	input := bytes.NewBufferString("10\n")
 	output := &bytes.Buffer{}
 	g.ReadThrust(input, output)
 	// TODO: check output
-	got := g.Thrust
+	got := g.State.Thrust
 	if want != got {
 		t.Errorf("Wanted %.1f, got %.1f", want, got)
+	}
+}
+
+func TestUpdateWorld(t *testing.T) {
+	t.Parallel()
+	g, err := lander.NewGame()
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := lander.State{
+		Altitude: 0.0,
+		Velocity: -110.0,
+		Gravity:  -10.0,
+		Thrust:   0.0,
+	}
+	g.UpdateWorld()
+	got := g.State
+	if !cmp.Equal(want, got) {
+		t.Error(cmp.Diff(want, got))
 	}
 }
