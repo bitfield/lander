@@ -77,3 +77,35 @@ func TestUpdateWorld(t *testing.T) {
 		t.Error(cmp.Diff(want, got))
 	}
 }
+
+func TestSoftLandingDisplayResultSuccess(t *testing.T) {
+	t.Parallel()
+	g, err := lander.NewGame()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.State.Velocity = 9.1
+	want := "Safe landing (9.1m/s): you win!\n"
+	buf := bytes.Buffer{}
+	g.DisplayResult(&buf)
+	got := buf.String()
+	if want != got {
+		t.Errorf("Wanted %q, got %q", want, got)
+	}
+}
+
+func TestHardLandingDisplayResultSuccess(t *testing.T) {
+	t.Parallel()
+	g, err := lander.NewGame()
+	if err != nil {
+		t.Fatal(err)
+	}
+	g.State.Velocity = 150.0
+	want := "Landed too hard (150.0m/s)! Try again\n"
+	buf := bytes.Buffer{}
+	g.DisplayResult(&buf)
+	got := buf.String()
+	if want != got {
+		t.Errorf("Wanted %q, got %q", want, got)
+	}
+}

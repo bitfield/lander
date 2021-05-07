@@ -3,6 +3,7 @@ package lander
 import (
 	"fmt"
 	"io"
+	"math"
 )
 
 type State struct {
@@ -26,6 +27,14 @@ func NewGame() (Game, error) {
 
 func (g Game) DisplayState(w io.Writer) {
 	fmt.Fprintf(w, "Altitude: %.1f Velocity: %.1f Thrust: %.1f\n", g.State.Altitude, g.State.Velocity, g.State.Thrust)
+}
+
+func (g Game) DisplayResult(w io.Writer) {
+	if math.Abs(g.State.Velocity) <= 10 {
+		fmt.Fprintf(w, "Safe landing (%.1fm/s): you win!\n", g.State.Velocity)
+	} else {
+		fmt.Fprintf(w, "Landed too hard (%.1fm/s)! Try again\n", g.State.Velocity)
+	}
 }
 
 func (g *Game) ReadThrust(input io.Reader, output io.Writer) {
